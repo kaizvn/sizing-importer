@@ -1,0 +1,55 @@
+
+const PRODUCTS = [
+  {
+    name: 'TEST 01',
+    code: 'D1234',
+    dimensions: ['Waist', 'Inseam ', 'Build'],
+    number_combinations: 127,
+    last_sync: '3 days ago',
+    last_sync_from: 'UniSync',
+    audit_coverage: 0.8,
+    number_tried: 15,
+  },
+  {
+    name: 'TEST 02',
+    code: 'D1235',
+    dimensions: ['Waist', 'Inseam ', 'Build'],
+    number_combinations: 111,
+    last_sync: '3 days ago',
+    last_sync_from: 'UniSync',
+    audit_coverage: 0.5,
+    number_tried: 12,
+  },
+  {
+    name: 'TEST 03',
+    code: 'D1236',
+    dimensions: ['Waist', 'Inseam ', 'Build'],
+    number_combinations: 20,
+    last_sync: '3 days ago',
+    last_sync_from: 'UniSync',
+    audit_coverage: 0.85,
+    number_tried: 1,
+  },
+  {
+    name: 'TEST 04',
+    code: 'D1237',
+    dimensions: ['Waist'],
+    number_combinations: 44,
+    last_sync: 'May 28th',
+    last_sync_from: 'UniSync',
+    audit_coverage: 0.9,
+    number_tried: 12,
+  },
+  {
+    name: 'TEST 05',
+    code: 'D1239',
+    dimensions: ['Waist'],
+    number_combinations: 69,
+    last_sync: 'last week',
+    last_sync_from: 'UniSync',
+    audit_coverage: 0.6,
+    number_tried: 11,
+  },
+]
+
+export { PRODUCTS }

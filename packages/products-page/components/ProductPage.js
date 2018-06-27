@@ -1,16 +1,17 @@
 import MyTab from './MyTab';
 import ProductList from './ProductList';
+import { PRODUCTS } from '../utils/mocks'
 
 const ProductPage = (props) => (
-  <div>
+  <div style={{margin: '20px'}}>
     <div>
-      <div>{props.title}</div>
-      <div>{props.dateRange}</div>
+      <h2>{props.title}</h2>
+      <div style={{opacity : 0.7}}>{props.dateFrom} - {props.dateTo}</div>
     </div>
     <div>
       <div>
         <MyTab tabs={props.tabs}/>
-        <ProductList data={props.data}/>
+        <ProductList data={PRODUCTS}/>
       </div>
     </div>
   </div>
