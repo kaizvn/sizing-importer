@@ -1,11 +1,8 @@
 
-
-
 const rowStyle = {
   display: 'inline-block',
-  width : '20%',
+  width : '25%',
 }
-
 
 export default prop => (
   <li>

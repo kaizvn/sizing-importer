@@ -2,7 +2,7 @@ import ProductItem from './ProductItem';
 
 const labelStyle = {
   display: 'inline-block',
-  width : '20%',
+  width : '25%',
   fontWeight: 'bold',
 }
 
