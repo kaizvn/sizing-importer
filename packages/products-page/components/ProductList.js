@@ -2,9 +2,9 @@ import ProductItem from './ProductItem';
 
 const labelStyle = {
   display: 'inline-block',
-  width : '25%',
+  width: '25%',
   fontWeight: 'bold',
-}
+};
 
 export default props => (
   <div>

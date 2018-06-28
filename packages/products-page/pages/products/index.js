@@ -1,6 +1,3 @@
-import MainLayout from '../../components/MainLayout'
+import MainLayout from '../../components/MainLayout';
 
-
-export default ()=> (
-  <MainLayout title='Product dashboard'/>
-)
+export default () => <MainLayout title="Product dashboard" />;

@@ -2,8 +2,6 @@ import DropToUpload from 'react-drop-to-upload';
 import React from 'react';
 import XLSX from 'xlsx';
 
-let importData;
-
 const buttonStyle = {
   backgroundColor: '#6458f5',
   color: '#fff',
@@ -29,32 +27,7 @@ const make_cols = refstr => {
   return o;
 };
 
-const handleFile = file => {
-  /* Boilerplate to set up FileReader */
-  const reader = new FileReader();
-  const rABS = !!reader.readAsBinaryString;
-  const fileName = file.name;
-  reader.onload = e => {
-    /* Parse data */
-    const bstr = e.target.result;
-    const wb = XLSX.read(bstr, { type: rABS ? 'binary' : 'array' });
-    /* Get first worksheet */
-    const wsname = wb.SheetNames[0];
-    const ws = wb.Sheets[wsname];
-    /* Convert array of arrays */
-    const rawData = XLSX.utils.sheet_to_json(ws, { header: 1 });
-    importData = transformRawToData(fileName.trim(), rawData);
-
-    console.log('importData:', importData);
-    //console.log({ data: data, cols: make_cols(ws['!ref']) });
-  };
-
-  rABS ? reader.readAsBinaryString(file) : reader.readAsArrayBuffer(file);
-};
-
 const transformRawToData = (fileName, rawData) => {
-  // proposed format :
-  // output = {  table : {data: [], label: []}, dimensions :  [{name: '', size_name: '', measure: '' , body_measuare: '' }], code: '', base_size: '', category: '', gender: '' }
   //remember to replace size with waist
   const baseDemensions = ['size', 'inseam', 'build'];
   const [x, code, gender, category] = fileName.match(
@@ -70,6 +43,7 @@ const transformRawToData = (fileName, rawData) => {
   };
 
   let currentDemension;
+
   rawData.forEach(row => {
     if (row && row.length) {
       const firstItem = (row[0] + '').trim().toLowerCase();
@@ -111,45 +85,88 @@ const transformRawToData = (fileName, rawData) => {
   return transformedData;
 };
 
-const handleDrop = files => {
-  try {
-    const file = files[0];
-    handleFile(file);
-  } catch (e) {
-    throw e;
+class addProduct extends React.Component {
+  constructor(props) {
+    super(props);
   }
-};
 
-export default props => (
-  <div>
-    <div style={{ margin: '30px 0' }}>
-      <div>Import from google Drive</div>
-      <input type="text" />
-    </div>
-    <div>
-      <div>From your computer</div>
-      <DropToUpload style={wrapperStyle} onDrop={handleDrop}>
-        <label style={buttonStyle} htmlFor="fileUpload">
-          <a>File picker</a>
-        </label>
-        <input
-          id="fileUpload"
-          onChange={e => handleDrop(e.target.files)}
-          style={{ visibility: 'hidden' }}
-          type="file"
-        />
-        <style jsx>
-          {`
-            button:focus {
-              outline: 0;
-            }
-            button a {
-              padding: 5px;
-              text-decoration: none;
-            }
-          `}
-        </style>
-      </DropToUpload>
-    </div>
-  </div>
-);
+  handleFile(file) {
+    /* Boilerplate to set up FileReader */
+    const reader = new FileReader();
+    const rABS = !!reader.readAsBinaryString;
+    const fileName = file.name;
+    const updateStateHandler = this.props.updateStateHandler;
+
+    reader.onload = e => {
+      /* Parse data */
+      const bstr = e.target.result;
+      const wb = XLSX.read(bstr, { type: rABS ? 'binary' : 'array' });
+      /* Get first worksheet */
+      const wsname = wb.SheetNames[0];
+      const ws = wb.Sheets[wsname];
+      /* Convert array of arrays */
+      const rawData = XLSX.utils.sheet_to_json(ws, { header: 1 });
+      const stateData = {};
+      stateData.data = transformRawToData(fileName.trim(), rawData);
+      stateData.currentPage = 'preview';
+      updateStateHandler(stateData);
+      //console.log({ data: data, cols: make_cols(ws['!ref']) });
+    };
+    rABS ? reader.readAsBinaryString(file) : reader.readAsArrayBuffer(file);
+  }
+
+  handleDrop(files) {
+    console.log('how');
+    try {
+      const file = files[0];
+      if (file.name.match(/\.xlsx$/i)) {
+        this.handleFile(file);
+      } else {
+        console.error(`input isn't excel file format`);
+      }
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  render() {
+    return (
+      <div>
+        <div style={{ margin: '30px 0' }}>
+          <div>Import from google Drive</div>
+          <input type="text" />
+        </div>
+        <div>
+          <div>From your computer</div>
+          <DropToUpload
+            style={wrapperStyle}
+            onDrop={this.handleDrop.bind(this)}
+          >
+            <label style={buttonStyle} htmlFor="fileUpload">
+              <a>File picker</a>
+            </label>
+            <input
+              id="fileUpload"
+              onChange={e => this.handleDrop(e.target.files)}
+              style={{ visibility: 'hidden' }}
+              type="file"
+            />
+            <style jsx>
+              {`
+                button:focus {
+                  outline: 0;
+                }
+                button a {
+                  padding: 5px;
+                  text-decoration: none;
+                }
+              `}
+            </style>
+          </DropToUpload>
+        </div>
+      </div>
+    );
+  }
+}
+
+export default addProduct;
