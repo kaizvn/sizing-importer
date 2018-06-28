@@ -4,14 +4,6 @@ import { PRODUCTS } from '../utils/mocks';
 import MyTab from './MyTab';
 import ProductList from './ProductList';
 
-const buttonStyle = {
-  backgroundColor: '#6458f5',
-  color: '#fff',
-  fontSize: '15px',
-  cursor: 'pointer',
-  height: '2em',
-};
-
 const addProduct = e => {
   alert('click!');
 };
@@ -26,16 +18,24 @@ const ProductPage = props => (
         </div>
       </div>
       <div style={{ float: 'right', margin: '30px 20px' }}>
-        <button style={buttonStyle}>
+        <button>
           <a href="#"> + Audit section</a>
         </button>
-        <button style={buttonStyle}>
-          <a href={`/products/Product?action=add&project=${props.project}`}>
-            + Product
-          </a>
+        <button>
+          <a href={`/product/import?project=${props.project}`}>+ Product</a>
         </button>
         <style jsx>
           {`
+            button {
+              background-color: #6458f5;
+              font-size: 15px;
+              cursor: pointer;
+              padding: 10px;
+              margin: 2px;
+            }
+            button a {
+              color: #fff;
+            }
             button:focus {
               outline: 0;
             }

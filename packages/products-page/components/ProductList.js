@@ -10,16 +10,22 @@ export default props => (
   <div>
     <ul>
       <li>
-        <div style={labelStyle}>Name</div>
-        <div style={labelStyle}>Dimensions</div>
-        <div style={labelStyle}>Last Sync</div>
-        <div style={labelStyle}>Audit Coverage</div>
+        <div>Name</div>
+        <div>Dimensions</div>
+        <div>Last Sync</div>
+        <div>Audit Coverage</div>
       </li>
       {(props.data || []).map((item, index) => (
         <ProductItem key={index} data={item} />
       ))}
     </ul>
+
     <style jsx>{`
+      li div {
+        display: inline-block;
+        width: 25%;
+        fontweight: bold;
+      }
       li {
         list-style: none;
         margin: 5px 0;

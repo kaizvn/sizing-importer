@@ -1,14 +1,7 @@
 import DropToUpload from 'react-drop-to-upload';
 import React from 'react';
+import Router from 'next/router';
 import XLSX from 'xlsx';
-
-const buttonStyle = {
-  backgroundColor: '#6458f5',
-  color: '#fff',
-  fontSize: '15px',
-  cursor: 'pointer',
-  height: '2em',
-};
 
 const wrapperStyle = {
   display: 'flex',
@@ -85,9 +78,10 @@ const transformRawToData = (fileName, rawData) => {
   return transformedData;
 };
 
-class addProduct extends React.Component {
+class ImportProduct extends React.Component {
   constructor(props) {
     super(props);
+    console.log('proj', this.props.project);
   }
 
   handleFile(file) {
@@ -95,7 +89,6 @@ class addProduct extends React.Component {
     const reader = new FileReader();
     const rABS = !!reader.readAsBinaryString;
     const fileName = file.name;
-    const updateStateHandler = this.props.updateStateHandler;
 
     reader.onload = e => {
       /* Parse data */
@@ -106,17 +99,17 @@ class addProduct extends React.Component {
       const ws = wb.Sheets[wsname];
       /* Convert array of arrays */
       const rawData = XLSX.utils.sheet_to_json(ws, { header: 1 });
-      const stateData = {};
-      stateData.data = transformRawToData(fileName.trim(), rawData);
-      stateData.currentPage = 'preview';
-      updateStateHandler(stateData);
+
+      const transformedData = transformRawToData(fileName.trim(), rawData);
+      this.props.updateStateHandler({ data: transformedData });
+
+      return Router.push(`/product/preview?project=${this.props.project}`);
       //console.log({ data: data, cols: make_cols(ws['!ref']) });
     };
     rABS ? reader.readAsBinaryString(file) : reader.readAsArrayBuffer(file);
   }
 
   handleDrop(files) {
-    console.log('how');
     try {
       const file = files[0];
       if (file.name.match(/\.xlsx$/i)) {
@@ -134,7 +127,7 @@ class addProduct extends React.Component {
       <div>
         <div style={{ margin: '30px 0' }}>
           <div>Import from google Drive</div>
-          <input type="text" />
+          <input type="text" style={{ width: '100%' }} />
         </div>
         <div>
           <div>From your computer</div>
@@ -142,7 +135,7 @@ class addProduct extends React.Component {
             style={wrapperStyle}
             onDrop={this.handleDrop.bind(this)}
           >
-            <label style={buttonStyle} htmlFor="fileUpload">
+            <label htmlFor="fileUpload">
               <a>File picker</a>
             </label>
             <input
@@ -151,17 +144,23 @@ class addProduct extends React.Component {
               style={{ visibility: 'hidden' }}
               type="file"
             />
-            <style jsx>
-              {`
-                button:focus {
-                  outline: 0;
-                }
-                button a {
-                  padding: 5px;
-                  text-decoration: none;
-                }
-              `}
-            </style>
+            <style jsx>{`
+              input:focus {
+                outline: 0;
+              }
+              label {
+                background-color: #6458f5;
+                color: #fff;
+                font-size: 15px;
+                cursor: pointer;
+                padding: 10px;
+                position: absolute;
+              }
+              button {
+                padding: 5px;
+                text-decoration: none;
+              }
+            `}</style>
           </DropToUpload>
         </div>
       </div>
@@ -169,4 +168,4 @@ class addProduct extends React.Component {
   }
 }
 
-export default addProduct;
+export default ImportProduct;
