@@ -38,7 +38,7 @@ const dimensionTableParser = rawTable => {
     return {
       garment_measure: row[garment],
       description: row[description],
-      body_measaure: '',
+      body_measaure: '', // to be mapped later
     };
   });
 
@@ -62,22 +62,20 @@ export const transformRawData = (fileName, parsedTables) => {
   );
   const base_size = baseSizeAttr.value.split(' x ');
 
-  const dimensionTables = _
+  const dimensions = _
     .filter(parsedTables, table => table.name !== 'attributes')
     .map(tbl => dimensionTableParser(tbl));
 
   base_size.forEach((val, index) => {
-    dimensionTables[index].base_size = val;
+    dimensions[index].base_size = val;
   });
 
-  const transformedData = {
+  return {
     file_name,
     code,
     category,
     gender,
     base_size,
-    dimensions: dimensionTables,
+    dimensions,
   };
-
-  return transformedData;
 };
