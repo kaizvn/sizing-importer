@@ -45,7 +45,7 @@ const dimensionTableParser = rawTable => {
   return rawTable;
 };
 
-export const transformRawToData = (fileName, parsedTables) => {
+export const transformRawData = (fileName, parsedTables) => {
   //remember to replace size with waist
   const baseDemensions = ['size', 'inseam', 'build'];
   const file_name = fileName.replace('.xlsx', '');

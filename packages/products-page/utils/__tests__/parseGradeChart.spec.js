@@ -1,15 +1,45 @@
-import { gradeChartParser, transformRawToData } from '../gradeChartParser';
+import { gradeChartParser, transformRawData } from '../gradeChartParser';
 
 describe('sheet parser: Grade Chart sheet', () => {
   it('should return attributes table', () => {
-    const fileName = '[1012] FA WOMEN DRESSWEAR PANT';
     const parsedTables = gradeChartParser(sheet);
     expect(parsedTables[0]).toEqual({
       name: 'attributes',
       headers: ['attribute', 'value'],
       rows: [{ attribute: 'Base size', value: '8 x RG' }],
     });
-    const transformedData = transformRawToData(fileName.trim(), parsedTables);
+  });
+
+  it('should return SIZE table', () => {
+    const tables = gradeChartParser(sheet);
+    expect(tables[1].name).toEqual('SIZE');
+    expect(tables[1].rows.length).toEqual(6);
+    expect(tables[1].rows[0]).toEqual({
+      '0': '28 1/2',
+      '10': '33 1/2',
+      '12': '35',
+      '14': '36 1/2',
+      '16': '38',
+      '18': '40',
+      '2': '29 1/2',
+      '20': '42',
+      '22': '44',
+      '24': '46',
+      '26': '48',
+      '4': '30 1/2',
+      '6': '31 1/2',
+      '8': '32 1/2',
+      'Measurement note': 'measured along curve at top WB',
+      SIZE: 'WAIST CIRCUMFERNCE',
+      XS: '27 1/2',
+    });
+  });
+
+  it('should transform raw data correctly', () => {
+    const fileName = '[1012] FA WOMEN DRESSWEAR PANT';
+    const parsedTables = gradeChartParser(sheet);
+    const transformedData = transformRawData(fileName.trim(), parsedTables);
+
     expect(transformedData.file_name).toEqual(fileName);
     expect(transformedData.code).toEqual('1012');
     expect(transformedData.gender).toEqual('WOMEN');
@@ -65,32 +95,6 @@ describe('sheet parser: Grade Chart sheet', () => {
         body_measaure: '',
       },
     ]);
-  });
-
-  it('should return SIZE table', () => {
-    const tables = gradeChartParser(sheet);
-    console.log('table %o', tables);
-    expect(tables[1].name).toEqual('SIZE');
-    expect(tables[1].rows.length).toEqual(6);
-    expect(tables[1].rows[0]).toEqual({
-      '0': '28 1/2',
-      '10': '33 1/2',
-      '12': '35',
-      '14': '36 1/2',
-      '16': '38',
-      '18': '40',
-      '2': '29 1/2',
-      '20': '42',
-      '22': '44',
-      '24': '46',
-      '26': '48',
-      '4': '30 1/2',
-      '6': '31 1/2',
-      '8': '32 1/2',
-      'Measurement note': 'measured along curve at top WB',
-      SIZE: 'WAIST CIRCUMFERNCE',
-      XS: '27 1/2',
-    });
   });
 });
 

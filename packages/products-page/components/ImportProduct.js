@@ -4,10 +4,7 @@ import Router from 'next/router';
 import XLSX from 'xlsx';
 import { CATEGORY } from '../utils/mocks';
 import { parser } from '../utils/parseSheet';
-import {
-  gradeChartParser,
-  transformRawToData,
-} from '../utils/gradeChartParser';
+import { gradeChartParser, transformRawData } from '../utils/gradeChartParser';
 import _ from 'lodash';
 const wrapperStyle = {
   display: 'flex',
@@ -71,7 +68,7 @@ class ImportProduct extends React.Component {
       /* Convert array of arrays */
       const rawData = XLSX.utils.sheet_to_json(ws, { header: 1, raw: true });
       const parsedTables = gradeChartParser(rawData);
-      const transformedData = transformRawToData(fileName.trim(), parsedTables);
+      const transformedData = transformRawData(fileName.trim(), parsedTables);
 
       this.props.updateStateHandler({ data: transformedData });
 
