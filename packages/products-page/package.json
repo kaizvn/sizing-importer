@@ -4,15 +4,19 @@
   "description": "",
   "main": "index.js",
   "dependencies": {
-    "next": "^6.0.3",
+    "lodash": "^4.17.10",
+    "next": "5",
     "react": "^16.4.1",
     "react-dom": "^16.4.1",
     "react-drop-to-upload": "^1.0.2",
     "xlsx": "^0.13.1"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "babel-jest": "^23.2.0",
+    "babel-preset-env": "^1.7.0",
+    "jest": "^23.2.0"
+  },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "next",
     "build": "next build",
     "start": "next start"
