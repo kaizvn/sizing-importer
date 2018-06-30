@@ -23,29 +23,6 @@ const make_cols = refstr => {
   return o;
 };
 
-const transformDataNew = (fileName, rawTables) => {
-  const file_name = fileName.replace('.xlsx', '');
-  const [, code] = fileName.match(/\[(.*)\]/i);
-  const [gender] = fileName.match(/WOMEN|MEN|UNISEX/i) || [''];
-  const category = '';
-
-  const parsedTables = gradeChartParser(rawData);
-  const attributesIndex = _.indexOf(
-    parsedTables,
-    table => name !== 'attributes'
-  );
-
-  const transformedData = {
-    code,
-    category,
-    gender,
-    dimensions: [],
-    base_size: '',
-  };
-
-  //todo : split base_size and add into each dimensions
-};
-
 class ImportProduct extends React.Component {
   constructor(props) {
     super(props);

@@ -49,7 +49,7 @@ export const transformRawData = (fileName, parsedTables) => {
   //remember to replace size with waist
   const baseDemensions = ['size', 'inseam', 'build'];
   const file_name = fileName.replace('.xlsx', '');
-  const [, code] = fileName.match(/\[(.*)\]/i),
+  const [code] = fileName.match(/\d+/i) || [''],
     [gender] = fileName.match(/WOMEN|MEN|UNISEX/i) || [''];
   //todo: map the category
   const category = '';
