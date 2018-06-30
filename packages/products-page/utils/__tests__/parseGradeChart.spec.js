@@ -1,14 +1,70 @@
-import gradeChartParser from '../gradeChartParser';
+import { gradeChartParser, transformRawToData } from '../gradeChartParser';
 
 describe('sheet parser: Grade Chart sheet', () => {
   it('should return attributes table', () => {
-    const tables = gradeChartParser(sheet);
-
-    expect(tables[0]).toEqual({
+    const fileName = '[1012] FA WOMEN DRESSWEAR PANT';
+    const parsedTables = gradeChartParser(sheet);
+    expect(parsedTables[0]).toEqual({
       name: 'attributes',
       headers: ['attribute', 'value'],
       rows: [{ attribute: 'Base size', value: '8 x RG' }],
     });
+    const transformedData = transformRawToData(fileName.trim(), parsedTables);
+    expect(transformedData.file_name).toEqual(fileName);
+    expect(transformedData.code).toEqual('1012');
+    expect(transformedData.gender).toEqual('WOMEN');
+    expect(transformedData.base_size).toEqual(['8', 'RG']);
+    expect(transformedData.dimensions[0].measures).toEqual([
+      {
+        garment_measure: 'WAIST CIRCUMFERNCE',
+        description: 'measured along curve at top WB',
+        body_measaure: '',
+      },
+      {
+        garment_measure: 'Hip circumference',
+        description: 'AT 3" UP FROM FRONT CROTCH',
+        body_measaure: '',
+      },
+      {
+        garment_measure: 'THIGH',
+        description: '1"Below crotch',
+        body_measaure: '',
+      },
+      {
+        garment_measure: 'KNEE',
+        description:
+          'measured from crotch 13" for short , 14" for regular , 15" for Tall',
+        body_measaure: '',
+      },
+      {
+        garment_measure: 'Front Rise',
+        description: 'RG -INC   W/ BAND',
+        body_measaure: '',
+      },
+      {
+        garment_measure: 'Back Rise',
+        description: 'RG -INC   W/ BAND',
+        body_measaure: '',
+      },
+    ]);
+
+    expect(transformedData.dimensions[1].measures).toEqual([
+      {
+        garment_measure: 'Front Rise',
+        description: 'Size 10',
+        body_measaure: '',
+      },
+      {
+        garment_measure: 'Back Rise',
+        description: 'Size 10',
+        body_measaure: '',
+      },
+      {
+        garment_measure: 'Inseam',
+        description: 'Size 10',
+        body_measaure: '',
+      },
+    ]);
   });
 
   it('should return SIZE table', () => {

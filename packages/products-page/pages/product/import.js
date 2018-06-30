@@ -13,7 +13,6 @@ class ImportPage extends React.Component {
   }
 
   updateStateHandler = stateObj => {
-    console.log('state', stateObj);
     localStorage.setItem('data', JSON.stringify(stateObj));
     this.setState(stateObj);
   };
